@@ -1,7 +1,7 @@
 # The Electronic shop
 
 ## Introduction
-This project is a php command-line application (php-cli) which aim to answer [the given interview questions](/instructions/README.md).
+This project is a php command-line application (php-cli) which aims to comply with [the given instructions](/instructions/README.md).
 
 ## Local developement
 

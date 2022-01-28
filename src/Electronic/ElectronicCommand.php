@@ -27,7 +27,7 @@ class ElectronicCommand extends Command
         }
         
         /**
-        * Question 1
+        * Instructions
         * 
         * A person would buy:
         * - 1 console (with 2 wired controllers and 2 wireless controllers as extras)
@@ -64,7 +64,10 @@ class ElectronicCommand extends Command
         //MICROWAVE #1
         $microwave = new Items\EIMicrowave(145.85);
         
-        //Question #1
+        /**
+         * Question 1
+         * Sort the items by price and output the total pricing.
+         */
         if($input->getArgument('question') == 'question1'){
             $output->writeln("=================Electronic Q1=================\n");
             $output->writeln("The console and televisions have extras; those extras are controllers. \nThe console has 2 remote controllers and 2 wired controllers. The TV #1 has 2 remote controllers and the TV #2 has 1remote controller. \nSort the items by price and output the total pricing.\n");
@@ -84,7 +87,10 @@ class ElectronicCommand extends Command
             return 0;
         }
         
-        //Question #2
+        /**
+         * Question 2
+         * That person's friend saw her with her new purchase and asked her how much the console and its controllers had cost her. Give the answer.
+         */
         if($input->getArgument('question') == 'question2'){
             $output->writeln("=================Electronic Q2=================\n");
             $output->writeln("That person's friend saw her with her new purchase and asked her how much the
@@ -102,6 +108,8 @@ console and its controllers had cost her. Give the answer.\n");
             
             return 0;
         }
+        
+        return 1;
     }
     
     /**

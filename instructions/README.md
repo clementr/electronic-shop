@@ -19,7 +19,7 @@ The console and televisions have extras; those extras are controllers. The conso
 > That person's friend saw her with her new purchase and asked her how much the console and its controllers had cost her. Give the answer.
 
 ## Code
-```
+```php
 <?php
 
 class ElectronicItems {

@@ -33,12 +33,6 @@ abstract class ElectronicItem
     /**
      * Return the price of the ElectroItem
      * 
-     * @return float Price of the item
-     */
-    
-    /**
-     * Return the price of the ElectroItem
-     * 
      * @param bool $includeExtras If true, return the price including all the associated extras (including extras of extras if applicable)
      * @return float Price of the item
      */
@@ -73,6 +67,7 @@ abstract class ElectronicItem
     }
     
     /**
+     * Return true if the item is wired, false otherwise
      * 
      * @return bool
      */
@@ -82,7 +77,7 @@ abstract class ElectronicItem
     }
     
     /**
-     * Set the price (concerted in cents)
+     * Set the price (converted in cents)
      * 
      * @param float $price
      * @return void
@@ -108,6 +103,7 @@ abstract class ElectronicItem
     }
     
     /**
+     * Define the ElectronicItem as wired or not
      * 
      * @param bool $wired
      * @return void

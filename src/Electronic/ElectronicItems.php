@@ -59,7 +59,7 @@ class ElectronicItems
     }
     
     /**
-     * Return the number of ElectronicItem
+     * Return the number of ElectronicItem within the ElctroItems list
      * 
      * @return int
      */
@@ -68,6 +68,12 @@ class ElectronicItems
         return count($this->items);
     }
     
+    /**
+     * Return total amount for all the cumulated ElectroItem within the ElectroItems list
+     * 
+     * @param bool $includingExtras If true we consider the price of extras ElectroItem recursively
+     * @return float Total amount
+     */
     public function getTotal(bool $includingExtras = true): float
     {
         $total = 0;
