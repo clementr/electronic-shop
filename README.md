@@ -1,7 +1,7 @@
-# The electronic shop
+# The Electronic shop
 
 ## Introduction
-This project is a php command application (php-cli) which aim to answer (the interview questions)[/instructions/README.md].
+This project is a php command-line application (php-cli) which aim to answer [the given interview questions](/instructions/README.md).
 
 ## Local developement
 
@@ -15,13 +15,13 @@ This project is a php command application (php-cli) which aim to answer (the int
 * PHP (cli) > 8.0.14 
 
 ### Install
-Within the project directory, run the following command to install the dependencies.
+Within the project directory, run the following command to build the docker container & install the dependencies for the app.
 ```
-docker-compose run php composer.phar install
+docker-compose run php ./composer.phar install
 ```
 
 ### Run
-Within the project directory, run the following command to run the app.
+Within the project root directory, execute the following commands to run the app.
 ```
 docker-compose run php ./console shop:electronic question1
 docker-compose run php ./console shop:electronic question2
@@ -29,5 +29,5 @@ docker-compose run php ./console shop:electronic question2
 
 ### Run the tests
 ```
-./vendor/bin/phpunit ./tests/
+docker-compose run php ./vendor/bin/phpunit ./tests/
 ```
