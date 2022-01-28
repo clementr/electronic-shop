@@ -2,12 +2,14 @@
 
 namespace Shop\Electronic;
 
+use Shop\Electronic\Items\EIController;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ElectronicCommand extends Command
@@ -16,6 +18,7 @@ class ElectronicCommand extends Command
     {
         $this->setName('shop:electronic')
             ->addArgument('question', InputArgument::REQUIRED, 'Question ref. is requires (question1|question2)')
+            ->addOption('flat', 'f', InputOption::VALUE_OPTIONAL, 'If 1, will order items considering the extras as ElectronicItem, if 0 extras will be nested under main ElectroItem', '0')
             ->setDescription('Question 1: Order for 1 console, 2 Tv and 1 microwave. Question 2: Total for the console and its extras');
     }
     
@@ -36,10 +39,10 @@ class ElectronicCommand extends Command
         */
         
         //CONSOLE
-        $wiredControllerConsole = new Items\EIController(25);
-        $wiredControllerConsole2 = new Items\EIController(25);
-        $wireless = new Items\EIController(39.99, false);
-        $wireless2 = new Items\EIController(39.99, false);
+        $wiredControllerConsole = new EIController(25);
+        $wiredControllerConsole2 = new EIController(25);
+        $wireless = new EIController(39.99, false);
+        $wireless2 = new EIController(39.99, false);
         
         $console = new Items\EIConsole(
             549.99, 
@@ -54,12 +57,12 @@ class ElectronicCommand extends Command
         
         //TV #1 (2 remote controllers)
         $television1 = new Items\EITelevision(379);
-        $television1->addExtra(new Items\EIController(17, false));
-        $television1->addExtra(new Items\EIController(17, false));
+        $television1->addExtra(new EIController(17, false));
+        $television1->addExtra(new EIController(17, false));
         
         //TV #2 (1 remote controller)
         $television2 = new Items\EITelevision(399.55);
-        $television2->addExtra(new Items\EIController(17, false));
+        $television2->addExtra(new EIController(17, false));
         
         //MICROWAVE #1
         $microwave = new Items\EIMicrowave(145.85);
@@ -82,7 +85,7 @@ class ElectronicCommand extends Command
                 ]
             );
             
-            $this->renderOrder($output, $electronicItems);
+            $this->renderOrder($output, $electronicItems, (bool) $input->getOption('flat'));
             
             return 0;
         }
@@ -93,8 +96,7 @@ class ElectronicCommand extends Command
          */
         if($input->getArgument('question') == 'question2'){
             $output->writeln("=================Electronic Q2=================\n");
-            $output->writeln("That person's friend saw her with her new purchase and asked her how much the
-console and its controllers had cost her. Give the answer.\n");
+            $output->writeln("That person's friend saw her with her new purchase and asked her how much the console and its controllers had cost her. Give the answer.\n");
             
             
             //Setup the list of electro items for Question #1
@@ -104,7 +106,7 @@ console and its controllers had cost her. Give the answer.\n");
                 ]
             );
             
-            $this->renderOrder($output, $electronicItems);
+            $this->renderOrder($output, $electronicItems, (bool) $input->getOption('flat'));
             
             return 0;
         }
@@ -118,14 +120,14 @@ console and its controllers had cost her. Give the answer.\n");
      * @param OutputInterface $output
      * @param ElectronicItems $electronicItems
      */
-    protected  function renderOrder(OutputInterface $output, ElectronicItems $electronicItems)
+    protected  function renderOrder(OutputInterface $output, ElectronicItems $electronicItems, bool $flat = true)
     {
         //FORMAT OUTPUT
         $table = new Table($output);
         
         $table->setHeaders(['Electronic Item', 'Wired', 'Price']);
         
-        foreach($electronicItems->getSortedItems() as $electronicItem){
+        foreach($electronicItems->getSortedItems(null, $flat) as $electronicItem){
             $table->addRow([
                 $electronicItem->getType(), 
                 $this->getWireLabel($electronicItem->getWired()), 
@@ -137,8 +139,8 @@ console and its controllers had cost her. Give the answer.\n");
              * implement it in display because at the moment only controllers are considered as extras 
              * and they do not have extra themselves. (ie: Could be useful if we want to add batteries as controllers extras)
              */
-            if($electronicItem->hasExtras()){                
-                foreach($electronicItem->getExtras()->getSortedItems() as $extraElectronicItem){
+            if($flat === false && $electronicItem->hasExtras()){
+                foreach($electronicItem->getExtras()->getSortedItems(null, $flat) as $extraElectronicItem){
                     $table->addRow([
                         '  Extra: '.$extraElectronicItem->getType(), 
                         $this->getWireLabel($extraElectronicItem->getWired()), 

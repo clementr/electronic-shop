@@ -67,4 +67,78 @@ final class ElectronicItemsTest extends TestCase
         
     }
     
+    public function testQuestion1Flat(): void
+    {
+        //Setup the list of electro items for Question #1
+        $electronicItems = $this->getQuestion1ElectronicItems();
+        
+        $electronicItemsSorted = $electronicItems->getSortedItems(null, true);
+        
+        $this->assertEquals(17, $electronicItemsSorted[0]->getPrice());
+        $this->assertEquals(17, $electronicItemsSorted[1]->getPrice());
+        $this->assertEquals(17, $electronicItemsSorted[2]->getPrice());
+        $this->assertEquals(25, $electronicItemsSorted[3]->getPrice());
+        $this->assertEquals(25, $electronicItemsSorted[4]->getPrice());
+        $this->assertEquals(39.99, $electronicItemsSorted[5]->getPrice());
+        $this->assertEquals(39.99, $electronicItemsSorted[6]->getPrice());
+        $this->assertEquals(145.85, $electronicItemsSorted[7]->getPrice());
+        $this->assertEquals(379, $electronicItemsSorted[8]->getPrice());
+        $this->assertEquals(399.55, $electronicItemsSorted[9]->getPrice());
+        $this->assertEquals(549.99, $electronicItemsSorted[10]->getPrice());
+        
+    }
+    
+    public function testQuestion1Nested(): void
+    {
+        //Setup the list of electro items for Question #1
+        $electronicItems = $this->getQuestion1ElectronicItems();
+        
+        $electronicItemsSorted = $electronicItems->getSortedItems(null, false);
+        
+        $this->assertEquals(145.85, $electronicItemsSorted[0]->getPrice());
+        $this->assertEquals(379, $electronicItemsSorted[1]->getPrice());
+        $this->assertEquals(399.55, $electronicItemsSorted[2]->getPrice());
+        $this->assertEquals(549.99, $electronicItemsSorted[3]->getPrice());
+    }
+    
+    private function getQuestion1ElectronicItems(): ElectronicItems
+    {
+        $wiredControllerConsole = new EIController(25);
+        $wiredControllerConsole2 = new EIController(25);
+        $wireless = new EIController(39.99, false);
+        $wireless2 = new EIController(39.99, false);
+        
+        $console = new EIConsole(
+            549.99, 
+            true, 
+            [
+                $wiredControllerConsole, 
+                $wiredControllerConsole2, 
+                $wireless, 
+                $wireless2
+            ]
+        );
+        
+        //TV #1 (2 remote controllers)
+        $television1 = new EITelevision(379);
+        $television1->addExtra(new EIController(17, false));
+        $television1->addExtra(new EIController(17, false));
+        
+        //TV #2 (1 remote controller)
+        $television2 = new EITelevision(399.55);
+        $television2->addExtra(new EIController(17, false));
+        
+        //MICROWAVE #1
+        $microwave = new EIMicrowave(145.85);
+        
+        //Setup the list of electro items for Question #1
+        return new ElectronicItems(
+            [
+                $console, 
+                $television1, 
+                $television2, 
+                $microwave
+            ]
+        );
+    }
 }
