@@ -38,8 +38,8 @@ class ElectronicCommand extends Command
         //CONSOLE
         $wiredControllerConsole = new Items\EIController(25);
         $wiredControllerConsole2 = new Items\EIController(25);
-        $wiredlessControllerConsole = new Items\EIController(39.99, false);
-        $wiredlessControllerConsole2 = new Items\EIController(39.99, false);
+        $wireless = new Items\EIController(39.99, false);
+        $wireless2 = new Items\EIController(39.99, false);
         
         $console = new Items\EIConsole(
             549.99, 
@@ -47,24 +47,24 @@ class ElectronicCommand extends Command
             [
                 $wiredControllerConsole, 
                 $wiredControllerConsole2, 
-                $wiredlessControllerConsole, 
-                $wiredlessControllerConsole2
+                $wireless, 
+                $wireless2
             ]
         );
         
-        //TV #1
+        //TV #1 (2 remote controllers)
         $television1 = new Items\EITelevision(379);
         $television1->addExtra(new Items\EIController(17, false));
         $television1->addExtra(new Items\EIController(17, false));
         
-        //TV #2
+        //TV #2 (1 remote controller)
         $television2 = new Items\EITelevision(399.55);
         $television2->addExtra(new Items\EIController(17, false));
         
         //MICROWAVE #1
         $microwave = new Items\EIMicrowave(145.85);
         
-        
+        //Question #1
         if($input->getArgument('question') == 'question1'){
             $output->writeln("=================Electronic Q1=================\n");
             $output->writeln("The console and televisions have extras; those extras are controllers. \nThe console has 2 remote controllers and 2 wired controllers. The TV #1 has 2 remote controllers and the TV #2 has 1remote controller. \nSort the items by price and output the total pricing.\n");
@@ -84,6 +84,7 @@ class ElectronicCommand extends Command
             return 0;
         }
         
+        //Question #2
         if($input->getArgument('question') == 'question2'){
             $output->writeln("=================Electronic Q2=================\n");
             $output->writeln("That person's friend saw her with her new purchase and asked her how much the
