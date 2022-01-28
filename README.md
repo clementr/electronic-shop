@@ -27,6 +27,8 @@ docker-compose run php ./console shop:electronic question1
 docker-compose run php ./console shop:electronic question2
 ```
 
+> You can use the option `-f`. By default `0`, the extras will be nested. With `-f 1` the sorting will handle the extras on the same level as the main electro items.
+
 ### Run the tests
 ```
 docker-compose run php ./vendor/bin/phpunit ./tests/

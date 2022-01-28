@@ -15,11 +15,12 @@ class ElectronicItems
      * Returns the items ordered by price (asc) depending on the sorting type requested
      * 
      * @param string $type Type of electronic: console|television|microwave|controller|null
+     * @param bool $recursive If true we will consider all items recursively (and not only the first level)
      * @return array Return the sorted items of $type. Return all items if $type is null
      */
-    public function getSortedItems(string $type = null): array
+    public function getSortedItems(string $type = null, bool $recursive = false): array
     {
-        $sorted = $this->getItemsByType($type);
+        $sorted = $this->getItemsByType($type, $recursive);
         
         usort($sorted, function($a, $b){
             return ($a->price <= $b->price) ? -1 : 1;
@@ -34,17 +35,38 @@ class ElectronicItems
      * @param string $type
      * @return array
      */
-    public function getItemsByType(string $type = null): array
+    
+    /**
+     * Return the list of ElectronicItem by type
+     * 
+     * @param string $type
+     * @param bool $recursive If true we will consider all items recursively (and not only the first level)
+     * @return array
+     */
+    public function getItemsByType(string $type = null, bool $recursive = false): array
     {
+        $items = $this->items;
+        
+        if($recursive){
+            foreach($this->items as $electronicItem){
+                if($electronicItem->hasExtras()){
+                    $items = array_merge(
+                        $items, 
+                        $electronicItem->getExtras()->getItemsByType($type, $recursive)
+                    );
+                }
+            }
+        }
+        
         if($type === null){
-            return $this->items;
+            return $items;
         }
         
         $callback = function ($item) use ($type) {
             return $item->getType() === $type;
         };
 
-        return array_filter($this->items, $callback);
+        return array_filter($items, $callback);
     }
     
     /**
